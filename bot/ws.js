@@ -18,15 +18,15 @@ module.exports = {
         console.error(e)
       }
     })
-    const interval = setInterval(() => {
-      console.info('try ping')
-      ws.ping((err) => {
-          if (err) {
-              try {
-                  console.log(`ws ping error\n${JSON.stringify(err)}`);
-              } catch (error) { }// eslint-disable-line no-empty
-          }
-      });
-  }, 60000);
+  //   const interval = setInterval(() => {
+  //     console.info('try ping')
+  //     ws.ping((err) => {
+  //         if (err) {
+  //             try {
+  //                 console.log(`ws ping error\n${JSON.stringify(err)}`);
+  //             } catch (error) { }// eslint-disable-line no-empty
+  //         }
+  //     });
+  // }, 60000);
   }
 }

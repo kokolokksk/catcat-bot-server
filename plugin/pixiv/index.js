@@ -2,24 +2,53 @@ const config = require('../../config')
 const g = require('../../utils/globel')
 const service = require('./service')
 const KEY_WORDS = g.getKeyWords()
+
+
+// {
+//   "anonymous": null,
+//   "font": 0,
+//   "group_id": 716692626,
+//   "message": "[CQ:reply,id=461003250][CQ:at,qq=2329692460]博士为什么要说这种话，阿米娅要生气了！[CQ:face,id=67]（33%）",
+//   "message_id": -2061579183,
+//   "message_seq": 3974,
+//   "message_type": "group",
+//   "post_type": "message",
+//   "raw_message": "[CQ:reply,id=461003250][CQ:at,qq=2329692460]博士为什么要说这种话，阿米娅要生气了！[CQ:face,id=67]（33%）",
+//   "self_id": 2329692460,
+//   "sender": {
+//       "age": 0,
+//       "area": "",
+//       "card": "",
+//       "level": "",
+//       "nickname": "Mreo家的兔兔",
+//       "role": "member",
+//       "sex": "unknown",
+//       "title": "",
+//       "user_id": 1982751087
+//   },
+//   "sub_type": "normal",
+//   "time": 1636351845,
+//   "user_id": 1982751087
+// }
+
 module.exports = options => {
   return async ({ data, ws, http }) => {
     // TODO:
     console.info(data)
-    if (!data.data.messageChain) {
-      return
+    if (!data) {
+      return 
     }
     
     //console.info(data.data)
-    const message = data?.data?.messageChain[1]?.text?.toUpperCase().trim()
+    const message = data?.message?.toUpperCase().trim()
     if (KEY_WORDS.includes(message)) {
       console.info(message +'is in KEY_WORDS list')
       return
     }
     console.info('common word :'+message)
-    if (data.data.type === 'GroupMessage') {
+    if (data.message_type === 'group') {
       // handle pixiv words
-      let groupId = data.data.sender.group.id
+      let groupId = data.group_id
       let url = "https://pixiv.cat/";
       if(message?.search('PIXIV') !== -1 &&message?.charAt(0)==="P"){
         let sendMsgData = {}
@@ -31,33 +60,23 @@ module.exports = options => {
           console.info(pixivID)
           if(pixivID == 'undfined' || pixivID ==undefined){
             sendMsgData = 
-                      {
-                "syncId": 111,                   
-                "command": "sendGroupMessage",  
-                "subCommand": null,             
-                "content":  {
-                            "sessionKey":g.getSession,
-                            "target":groupId,
-                            "messageChain":[
-                              { "type":"Plain", "text": '未找到'},
-                            ]
-                          }
-              }
+                   {
+                    "action":"send_group_msg",
+                    "params":{
+                    "group_id":groupId,
+                    "message":"未找到"
+                    }
+                   }
           }else{
             url += pixivID+".jpg"
             sendMsgData = 
-                      {
-                "syncId": 111,                   
-                "command": "sendGroupMessage",  
-                "subCommand": null,             
-                "content":  {
-                            "sessionKey":g.getSession,
-                            "target":groupId,
-                            "messageChain":[
-                              { "type":"Image", "url": url},
-                            ]
-                          }
+            {
+              "action":"send_group_msg",
+              "params":{
+              "group_id":groupId,
+              "message":"这里本来是要返回图片的，但是还没对接"
               }
+             }
           }
           
         }else{
@@ -65,41 +84,31 @@ module.exports = options => {
            
             url += pid+".jpg"
             sendMsgData = 
-                      {
-                "syncId": 111,                   
-                "command": "sendGroupMessage",  
-                "subCommand": null,             
-                "content":  {
-                            "sessionKey":g.getSession,
-                            "target":groupId,
-                            "messageChain":[
-                              { "type":"Image", "url": url},
-                            ]
-                          }
+            {
+              "action":"send_group_msg",
+              "params":{
+              "group_id":groupId,
+              "message":"这里本来是要返回图片的，但是还没对接"
               }
+             }
            
           }
         ws.send(sendMsgData)  
         return
       }
-      if(message?.search('GETTOKEN') !==-1 &&message?.charAt(0)==="G" && data?.data?.sender.id == config.defualt_admin_qq){
+      if(message?.search('GETTOKEN') !==-1 &&message?.charAt(0)==="G" && data?.sender.user_id == config.defualt_admin_qq){
         let bearer = await service.getBearer(config.refresh_token)
         g.setBearer(bearer)
         console.info(bearer)
         let sendMsgData = {}
         sendMsgData = 
-                    {
-              "syncId": 111,                   
-              "command": "sendGroupMessage",  
-              "subCommand": null,             
-              "content":  {
-                          "sessionKey":g.getSession,
-                          "target":groupId,
-                          "messageChain":[
-                            { "type":"Plain", "text": 'token已刷新'},
-                          ]
-                        }
-            }
+        {
+          "action":"send_group_msg",
+          "params":{
+          "group_id":groupId,
+          "message":"token已刷新"
+          }
+         }
         ws.send(sendMsgData)
         return
       } 
@@ -121,34 +130,6 @@ module.exports = options => {
        // ws.send(sendMsgData)
         return
     }
-  
-    if (data.data.type === 'FriendMessage') {
-        console.info("come in fmg")
-        let hl =   await service.getDetail();
-        console.info(hl)
-        let sendMsgData = 
-                  {
-            "syncId": 111,                   
-            "command": "sendFriendMessage",  
-            "subCommand": null,             
-            "content":  {
-                        "sessionKey":g.getSession,
-                        "target":data.data.sender.id,
-                        "messageChain":[
-                          { 
-                            "type":"Plain", 
-                            "text":hl[0]?.data?.text,
-                          },
-                        ]
-                      }
-          }
-
-          // ws.send('send_private_msg', {
-          //   user_id: data.user_id,
-          //   message: await service.getDetail(),
-          // })
-        //ws.send(sendMsgData)
-        return
-    }
+   
   }
 }
