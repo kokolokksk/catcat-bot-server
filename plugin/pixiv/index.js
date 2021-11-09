@@ -74,7 +74,7 @@ module.exports = options => {
               "action":"send_group_msg",
               "params":{
               "group_id":groupId,
-              "message":"这里本来是要返回图片的，但是还没对接"
+              "message":'[CQ:at,qq='+data.sender.user_id+'],illust_id='+pixivID+'[CQ:image,file='+pixivID+'.jpg,url='+url+']'
               }
              }
           }
@@ -88,9 +88,9 @@ module.exports = options => {
               "action":"send_group_msg",
               "params":{
               "group_id":groupId,
-              "message":"这里本来是要返回图片的，但是还没对接"
+              "message":'[CQ:at,qq='+data.sender.user_id+'],illust_id='+pid+'[CQ:image,file='+pid+'.jpg,url='+url+']'
               }
-             }
+             } 
            
           }
         ws.send(sendMsgData)  
