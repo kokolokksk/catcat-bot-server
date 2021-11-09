@@ -85,6 +85,26 @@ module.exports = options => {
             let bearer = g.getBearer()
             let pixivIDList = await service.rsshub(url,bearer)
             console.info(pixivIDList)
+            if(pixivIDList == 'undfined' || pixivIDList ==undefined){
+              sendMsgData = 
+                     {
+                      "action":"send_group_msg",
+                      "params":{
+                      "group_id":groupId,
+                      "message":"未找到"
+                      }
+                     }
+            }else{
+              url += pixivIDList+".jpg"
+              sendMsgData = 
+              {
+                "action":"send_group_msg",
+                "params":{
+                "group_id":groupId,
+                "message":'[CQ:at,qq='+data.sender.user_id+'] illust_id='+pixivIDList+' [CQ:image,file='+pixivIDList+'.jpg,url='+url+']'
+                }
+               }
+            }
         }else{
           let pid = message.slice(6,message.length)
            
