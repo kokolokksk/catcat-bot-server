@@ -95,13 +95,13 @@ module.exports = options => {
                       }
                      }
             }else{
-              url += pixivIDList+".jpg"
+              let catutl  ="https://pixiv.cat/"+ pixivIDList+".jpg"
               sendMsgData = 
               {
                 "action":"send_group_msg",
                 "params":{
                 "group_id":groupId,
-                "message":'[CQ:at,qq='+data.sender.user_id+'] illust_id='+pixivIDList+' [CQ:image,file='+pixivIDList+'.jpg,url='+url+']'
+                "message":'[CQ:at,qq='+data.sender.user_id+'] illust_id='+pixivIDList+' [CQ:image,file='+pixivIDList+'.jpg,url='+catutl+']'
                 }
                }
             }
