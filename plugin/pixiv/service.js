@@ -1,7 +1,6 @@
 const axios =require('axios')
 const iconv = require('iconv-lite')
 const qs = require('qs')
-const parse = require('fast-xml-parser')
 async function getInfo(date = new Date()) {
  
 }
@@ -30,15 +29,22 @@ async function getSearch(key,bearer){
 async function rsshub(url){
   console.info("get pixiv ranking data")
   const {data} = await axios({
-    responseType:'arrarybuffer',
-    method: 'get',
-    url: 'https://rsshub.app/pixiv/ranking/'+url,
+    responseType:'arraybuffer',
+    url:'https://app-api.pixiv.net/v1/illust/ranking'+url,
     headers:{
+      'Authorization':'Bearer '+bearer,
+      'Referer':'http://spapi.pixiv.net/' ,
+      'Host':'app-api.pixiv.net',
       'User-Agent':'PixivAndroidApp/5.0.234 (Android 11; Pixel 5)'
     }
   })
-  let datax = parse.parse(iconv.decode(data, 'utf-8'))
+  let datax = JSON.parse(iconv.decode(data, 'utf-8'))
   console.info(datax)
+  let rodom = 0
+  if(eval(datax)?.illusts?.length){
+    rodom= parseInt(Math.random()*(eval(datax)?.illusts?.length+1),10)
+  }
+  return eval(datax)?.illusts[rodom]?.id
 }
 
 async function getBearer(refresh_token){
