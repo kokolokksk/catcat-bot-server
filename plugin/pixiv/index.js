@@ -82,7 +82,8 @@ module.exports = options => {
         }else if(message?.search('R') !== -1){
             let url = message?.slice(8,message.length);
             console.info(url)
-            let pixivIDList = await service.rsshub(url)
+            let bearer = g.getBearer()
+            let pixivIDList = await service.rsshub(url,bearer)
             console.info(pixivIDList)
         }else{
           let pid = message.slice(6,message.length)

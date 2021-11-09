@@ -26,7 +26,7 @@ async function getSearch(key,bearer){
   return eval(datax)?.illusts[rodom]?.id
 }
 
-async function rsshub(url){
+async function rsshub(url,bearer){
   console.info("get pixiv ranking data")
   const {data} = await axios({
     responseType:'arraybuffer',
