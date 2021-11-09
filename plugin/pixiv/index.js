@@ -74,11 +74,16 @@ module.exports = options => {
               "action":"send_group_msg",
               "params":{
               "group_id":groupId,
-              "message":'[CQ:at,qq='+data.sender.user_id+'],illust_id='+pixivID+'[CQ:image,file='+pixivID+'.jpg,url='+url+']'
+              "message":'[CQ:at,qq='+data.sender.user_id+'] illust_id='+pixivID+' [CQ:image,file='+pixivID+'.jpg,url='+url+']'
               }
              }
           }
           
+        }else if(message?.search('R') !== -1){
+            let url = message?.slice(8,message.length);
+            console.info(url)
+            let pixivIDList = await service.rsshub(url)
+            console.info(pixivIDList)
         }else{
           let pid = message.slice(6,message.length)
            
@@ -88,7 +93,7 @@ module.exports = options => {
               "action":"send_group_msg",
               "params":{
               "group_id":groupId,
-              "message":'[CQ:at,qq='+data.sender.user_id+'],illust_id='+pid+'[CQ:image,file='+pid+'.jpg,url='+url+']'
+              "message":'[CQ:at,qq='+data.sender.user_id+'] illust_id='+pid+' [CQ:image,file='+pid+'.jpg,url='+url+']'
               }
              } 
            

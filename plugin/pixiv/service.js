@@ -1,6 +1,7 @@
 const axios =require('axios')
 const iconv = require('iconv-lite')
 const qs = require('qs')
+const parse = require('fast-xml-parser')
 async function getInfo(date = new Date()) {
  
 }
@@ -9,7 +10,7 @@ async function getInfo(date = new Date()) {
 async function getSearch(key,bearer){
   const {data} = await axios({
     responseType:'arraybuffer',
-    url:'https://app-api.pixiv.net/v1/search/illust?word='+key,
+    url:'https://app-api.pixiv.net/v1/search/illust?merge_plain_keyword_results=true&search_target=partial_match_for_tags&word='+key+'&include_translated_tag_results=true&sort=popular_descinclude_translated_tag_results',
     headers:{
       'Authorization':'Bearer '+bearer,
       'Referer':'http://spapi.pixiv.net/' ,
@@ -24,6 +25,20 @@ async function getSearch(key,bearer){
     rodom= parseInt(Math.random()*(eval(datax)?.illusts?.length+1),10)
   }
   return eval(datax)?.illusts[rodom]?.id
+}
+
+async function rsshub(url){
+  console.info("get pixiv ranking data")
+  const {data} = await axios({
+    responseType:'arrarybuffer',
+    method: 'get',
+    url: 'https://rsshub.app/pixiv/ranking/'+url,
+    headers:{
+      'User-Agent':'PixivAndroidApp/5.0.234 (Android 11; Pixel 5)'
+    }
+  })
+  let datax = parse.parse(iconv.decode(data, 'utf-8'))
+  console.info(datax)
 }
 
 async function getBearer(refresh_token){
@@ -79,5 +94,5 @@ async function getAIReply() {
 }
 
 module.exports = {
-  getSearch,getBearer
+  getSearch,getBearer,rsshub
 }
