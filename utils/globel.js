@@ -3,6 +3,12 @@ class globel {
   KEY_WORDS = ['HL','黄历']
   bearer = ''
   refresh_token = ''
+  ACTION = {
+    SEND_GROUP_MSG:'send_group_msg'
+  }
+  getAction() {
+    return this.ACTION
+  }
   getKeyWords() {
     return this.KEY_WORDS
   }

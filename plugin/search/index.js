@@ -4,7 +4,7 @@ const KEY_WORDS = g.getKeyWords()
 module.exports = options => {
   return async ({ data, ws, http }) => {
     // TODO:
-    console.info(data)
+    // console.info(data)
     if (!data.data.messageChain) {
       return
     }
@@ -15,7 +15,7 @@ module.exports = options => {
       console.info(message +'is in KEY_WORDS list')
       return
     }
-    console.info('common word :'+message)
+    // console.info('common word :'+message)
     if (data.data.type === 'GroupMessage') {
       // if(data?.data?.messageChain[1]?.type ==='At'){
       //   let sendMsgData = 
