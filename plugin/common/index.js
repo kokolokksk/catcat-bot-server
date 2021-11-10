@@ -26,6 +26,7 @@ module.exports = options => {
        var p2 = /[0-9]*/
        let qq = p2.test(p1.test(msg)) 
        console.info(qq)
+       
        let m = msgBuilder.setAction(ACTION.SEND_GROUP_MSG).setParam(msgParamBuilder.setGroupId(data.group_id).setMessage('[CQ:at,qq='+qq+'] 的味道还真是······（'+random))
         // console.info(JSON.stringify(m.getMsg()))
         ws.send(m.getMsg())
