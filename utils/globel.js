@@ -24,6 +24,7 @@ class globel {
       e=>{
         msgdb.findMsg({'type':'config'},(err,docs)=>{
           if (docs !== null && docs.length !== 0) {
+            console.info(docs[0])
             return docs[0].bearer
           }else{
             return this.bearer
