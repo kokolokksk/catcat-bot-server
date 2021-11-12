@@ -20,7 +20,7 @@ class globel {
     this.session = args
   }
  async getBearer(){
-   await msgdb.init().then( 
+    let b = await msgdb.init().then( 
       e=>{
         msgdb.findMsg({'type':'config'},(err,docs)=>{
           if (docs !== null && docs.length !== 0) {
@@ -32,6 +32,7 @@ class globel {
         })
       }
      )
+     return b
   }
   setBearer(args){
     this.bearer = args
