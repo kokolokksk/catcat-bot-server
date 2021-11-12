@@ -20,26 +20,17 @@ class globel {
     this.session = args
   }
   getBearer(){
-    let b =  getBearerFromDbFirst()
-    if( b==null){
-      b = this.bearer
-    }
-    console.info("bearer is :"+b)
-    return b
-  }
-  getBearerFromDbFirst(){
     msgdb.init().then( 
       e=>{
         msgdb.findMsg({'type':'config'},(err,docs)=>{
           if (docs !== null && docs.length !== 0) {
             return docs[0].bearer
           }else{
-            return
+            return this.bearer
           }
         })
       }
      )
-     
   }
   setBearer(args){
     this.bearer = args
