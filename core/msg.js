@@ -7,7 +7,7 @@ async function init(){
   }
 
   function getDb(){
-    await init()
+    init()
     return db.msg
   }
 function insertMsg(msg){

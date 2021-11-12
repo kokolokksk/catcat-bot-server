@@ -1,4 +1,4 @@
-const msgdb = require('./core/msg')
+const msgdb = require('../core/msg')
 class globel {
   session=''
   KEY_WORDS = ['HL','黄历']
@@ -20,7 +20,7 @@ class globel {
     this.session = args
   }
   getBearer(){
-    let b = await getBearerFromDbFirst()
+    let b =  getBearerFromDbFirst()
     if( b==null){
       b = this.bearer
     }
