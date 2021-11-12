@@ -24,6 +24,7 @@ class globel {
     if( b==null){
       b = this.bearer
     }
+    console.info("bearer is :"+b)
     return b
   }
   getBearerFromDbFirst(){
