@@ -23,11 +23,10 @@ module.exports = options => {
        let random = Math.random()
        let msg = data.message
        var p1 = /[CQ:at,qq=[0-9]*]/
-       var p2 = /[0-9]*/
-       let qq = p2.test(p1.test(msg)) 
+       let qq = data.message.replace(msg.replace(p1,""),"")
        console.info(qq)
        
-       let m = msgBuilder.setAction(ACTION.SEND_GROUP_MSG).setParam(msgParamBuilder.setGroupId(data.group_id).setMessage('[CQ:at,qq='+qq+'] 的味道还真是······（'+random))
+       let m = msgBuilder.setAction(ACTION.SEND_GROUP_MSG).setParam(msgParamBuilder.setGroupId(data.group_id).setMessage(qq+' 的味道还真是······（'+random))
         // console.info(JSON.stringify(m.getMsg()))
         ws.send(m.getMsg())
         return

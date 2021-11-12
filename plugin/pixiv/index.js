@@ -138,21 +138,6 @@ module.exports = options => {
         ws.send(sendMsgData)
         return
       } 
-      let hl =   {};
-       
-      let sendMsgData = 
-                  {
-            "syncId": 111,                   
-            "command": "sendGroupMessage",  
-            "subCommand": null,             
-            "content":  {
-                        "sessionKey":g.getSession,
-                        "target":513299206,
-                        "messageChain":[
-                          { "type":"Image", "url": url},
-                        ]
-                      }
-          }
        // ws.send(sendMsgData)
         return
     }

@@ -9,7 +9,7 @@ async function getInfo(date = new Date()) {
 async function getSearch(key,bearer){
   const {data} = await axios({
     responseType:'arraybuffer',
-    url:'https://app-api.pixiv.net/v1/search/illust?merge_plain_keyword_results=true&search_target=partial_match_for_tags&word='+key+'&include_translated_tag_results=true&sort=popular_descinclude_translated_tag_results',
+    url:'https://app-api.pixiv.net/v1/search/illust?merge_plain_keyword_results=true&search_target=partial_match_for_tags&word='+key+'&include_translated_tag_results=true',
     headers:{
       'Authorization':'Bearer '+bearer,
       'Referer':'http://spapi.pixiv.net/' ,
