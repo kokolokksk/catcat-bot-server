@@ -1,3 +1,4 @@
+const msgdb = require('./core/msg')
 class globel {
   session=''
   KEY_WORDS = ['HL','黄历']
@@ -19,7 +20,25 @@ class globel {
     this.session = args
   }
   getBearer(){
-    return this.bearer
+    let b = await getBearerFromDbFirst()
+    if( b==null){
+      b = this.bearer
+    }
+    return b
+  }
+  getBearerFromDbFirst(){
+    msgdb.init().then( 
+      e=>{
+        msgdb.findMsg({'type':'config'},(err,docs)=>{
+          if (docs !== null && docs.length !== 0) {
+            return docs[0].bearer
+          }else{
+            return
+          }
+        })
+      }
+     )
+     
   }
   setBearer(args){
     this.bearer = args

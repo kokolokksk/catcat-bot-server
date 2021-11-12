@@ -6,6 +6,10 @@ async function init(){
     await db.msg.loadDatabase()
   }
 
+  function getDb(){
+    await init()
+    return db.msg
+  }
 function insertMsg(msg){
  // console.info(db)
   db.msg.find(msg,function (err,docs) {
@@ -26,5 +30,5 @@ function findMsg(msg){
 }
 
 module.exports = {
-  init,insertMsg,findMsg
+  init,insertMsg,findMsg,getDb
 }

@@ -2,6 +2,7 @@ const config = require('../../config')
 const g = require('../../utils/globel')
 const service = require('./service')
 const KEY_WORDS = g.getKeyWords()
+const msg = require('../../core/msg')
 
 
 // {
@@ -124,6 +125,20 @@ module.exports = options => {
       }
       if(message?.search('GETTOKEN') !==-1 &&message?.charAt(0)==="G" && data?.sender.user_id == config.defualt_admin_qq){
         let bearer = await service.getBearer(config.refresh_token)
+        let msgDb = msg.getDb()
+        msgDb.find({type:'config'},(err,docs)=>{
+          if(docs !== null && docs.length !==0){
+            msgDb.update({ _id: docs[0]._id }, { $set: { bearer: bearer } }, {}, function () {
+              console.info('update success')
+            })
+          }else{
+            msgDb.insert({type:'config',bearer:bearer},(err,ret)=>{
+              if(err!==null){
+                console.info(err)
+              }
+            })
+          }
+        })
         g.setBearer(bearer)
         console.info(bearer)
         let sendMsgData = {}
