@@ -84,7 +84,7 @@ module.exports = options => {
         }else if(message?.search('R') !== -1){
             let url = message?.slice(8,message.length);
             console.info(url)
-            let bearer = g.getBearer()
+            let bearer =  await g.freshBearerFromDb()
             let pixivIDList = await service.rsshub(url,bearer)
             console.info(pixivIDList)
             if(pixivIDList == 'undfined' || pixivIDList ==undefined){
