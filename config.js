@@ -1,7 +1,7 @@
 module.exports = {
   bot: {
-    http: 'http://loveloliii.monster:8080',
-    ws: 'ws://loveloliii.monster:8080/?access_token=1'
+    http: 'http://ip:port',
+    ws: 'ws://ip:port/?access_token=1'
   },
   refresh_token:'1',
   defualt_admin_qq:'1',
