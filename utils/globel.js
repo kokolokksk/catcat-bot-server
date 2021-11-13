@@ -19,18 +19,21 @@ class globel {
   setSession(args) {
     this.session = args
   }
- freshBearerFromDb(callback){
+ freshBearerFromDb(){
   let Datastore = require('nedb')
   let msgDb  =  new Datastore('msg.db')
   msgDb.loadDatabase()
-  msgDb.find({'type':'config'},(err,docs)=>{
-    if (docs !== null && docs.length !== 0) {
-      console.info(docs[0])
-      this.bearer = docs[0].bearer
-    }
-  })
-  callback()
-  }
+  return new Promise((resole,reject)=>{
+    msgDb.find({'type':'config'},(err,docs)=>{
+      if (docs !== null && docs.length !== 0) {
+        console.info(docs[0])
+        resole(docs[0].bearer)
+      }else{
+        reject(err)
+      }
+    })
+  })}
+  
   setBearer(args){
     this.bearer = args
   }
