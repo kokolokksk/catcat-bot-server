@@ -56,7 +56,9 @@ module.exports = options => {
         if(message?.search('S') !== -1){
           // https://app-api.pixiv.net/v1/search/illust?word=1
           let key = message?.slice(8,message.length);
-          let bearer = g.getBearer()
+          g.freshBearerFromDb()
+          let bearer = g.bearer
+          console.info("b:"+bearer+" ?")
           let pixivID = await service.getSearch(encodeURI(key),bearer)
           console.info(pixivID)
           if(pixivID == 'undfined' || pixivID ==undefined){
